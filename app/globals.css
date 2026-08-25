@@ -1,0 +1,215 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #030508;
+  --bg-secondary: #071014;
+  --panel: #0a1117;
+  --accent: #00f5a0;
+  --accent-2: #00d9ff;
+  --warning: #ffb800;
+  --danger: #ff3864;
+  --text: #e8f1f5;
+  --muted: #71808a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-void text-frost antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(0, 245, 160, 0.25);
+  color: #e8f1f5;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #030508;
+}
+::-webkit-scrollbar-thumb {
+  background: #12242c;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 245, 160, 0.35);
+}
+
+:focus-visible {
+  outline: 1px solid rgba(0, 245, 160, 0.7);
+  outline-offset: 2px;
+}
+
+@layer components {
+  .hud-corner {
+    position: relative;
+  }
+  .hud-corner::before,
+  .hud-corner::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: var(--corner-color, rgba(0, 245, 160, 0.55));
+    border-style: solid;
+    pointer-events: none;
+  }
+  .hud-corner::before {
+    top: -1px;
+    left: -1px;
+    border-width: 1px 0 0 1px;
+  }
+  .hud-corner::after {
+    bottom: -1px;
+    right: -1px;
+    border-width: 0 1px 1px 0;
+  }
+
+  .glitch {
+    position: relative;
+    display: inline-block;
+  }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .glitch::before {
+    color: var(--accent-2);
+    transform: translate(-2px, -1px);
+    clip-path: inset(20% 0 60% 0);
+  }
+  .glitch::after {
+    color: var(--danger);
+    transform: translate(2px, 1px);
+    clip-path: inset(60% 0 15% 0);
+  }
+  .glitch:hover::before,
+  .glitch.glitching::before {
+    opacity: 0.85;
+    animation: glitch-a 0.35s steps(3) infinite;
+  }
+  .glitch:hover::after,
+  .glitch.glitching::after {
+    opacity: 0.85;
+    animation: glitch-b 0.35s steps(3) infinite;
+  }
+
+  .crt-overlay {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 2px,
+      rgba(0, 0, 0, 0.22) 3px,
+      rgba(0, 0, 0, 0.22) 4px
+    );
+  }
+
+  .noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.05;
+  }
+
+  /* persistent blueprint grid shown behind every section */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(0, 245, 160, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 245, 160, 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .bg-grid-fade {
+    background: radial-gradient(
+      ellipse 80% 60% at 50% 40%,
+      transparent 0%,
+      rgba(3, 5, 8, 0.55) 70%,
+      rgba(3, 5, 8, 0.85) 100%
+    );
+  }
+
+  .text-glow {
+    text-shadow:
+      0 0 12px rgba(0, 245, 160, 0.45),
+      0 0 40px rgba(0, 245, 160, 0.15);
+  }
+  .text-glow-cyan {
+    text-shadow:
+      0 0 12px rgba(0, 217, 255, 0.5),
+      0 0 36px rgba(0, 217, 255, 0.18);
+  }
+
+  .btn-hud {
+    @apply relative inline-flex items-center justify-center gap-2 border px-5 py-2.5 font-mono text-xs tracking-[0.2em] transition-all duration-300;
+    border-color: rgba(0, 245, 160, 0.4);
+    color: var(--accent);
+    background: rgba(0, 245, 160, 0.04);
+  }
+  .btn-hud:hover {
+    background: rgba(0, 245, 160, 0.12);
+    box-shadow:
+      0 0 16px rgba(0, 245, 160, 0.25),
+      inset 0 0 12px rgba(0, 245, 160, 0.08);
+    border-color: rgba(0, 245, 160, 0.8);
+  }
+  .btn-hud[aria-disabled="true"] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-hud-ghost {
+    @apply btn-hud;
+    border-color: rgba(0, 217, 255, 0.35);
+    color: var(--accent-2);
+    background: rgba(0, 217, 255, 0.03);
+  }
+  .btn-hud-ghost:hover {
+    background: rgba(0, 217, 255, 0.1);
+    box-shadow:
+      0 0 16px rgba(0, 217, 255, 0.22),
+      inset 0 0 12px rgba(0, 217, 255, 0.07);
+    border-color: rgba(0, 217, 255, 0.75);
+  }
+
+  .terminal-input {
+    @apply w-full border bg-black/40 px-3 py-2.5 font-mono text-sm text-frost outline-none transition-colors duration-200 placeholder:text-muted/60;
+    border-color: rgba(113, 128, 138, 0.3);
+  }
+  .terminal-input:focus {
+    border-color: rgba(0, 245, 160, 0.6);
+    box-shadow: 0 0 12px rgba(0, 245, 160, 0.12);
+  }
+}
+
+@keyframes glitch-a {
+  0% { clip-path: inset(12% 0 74% 0); transform: translate(-2px, -1px); }
+  33% { clip-path: inset(58% 0 22% 0); transform: translate(2px, 1px); }
+  66% { clip-path: inset(30% 0 48% 0); transform: translate(-1px, 0); }
+  100% { clip-path: inset(70% 0 8% 0); transform: translate(1px, -1px); }
+}
+@keyframes glitch-b {
+  0% { clip-path: inset(66% 0 12% 0); transform: translate(2px, 1px); }
+  33% { clip-path: inset(18% 0 68% 0); transform: translate(-2px, -1px); }
+  66% { clip-path: inset(44% 0 38% 0); transform: translate(1px, 2px); }
+  100% { clip-path: inset(8% 0 78% 0); transform: translate(-1px, 1px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
