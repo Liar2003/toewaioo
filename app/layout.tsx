@@ -20,38 +20,36 @@ const SITE_URL = "https://example.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "MG MG — Senior Full-Stack Developer",
-    template: "%s | MG MG",
+    default: "Toewaioo — Intermediate Developer",
+    template: "%s | Toewaioo",
   },
   description:
-    "Senior Full-Stack Developer building scalable web applications, high-performance APIs, automation systems and production infrastructure.",
+    "Intermediate Developer from Myanmar building modern web applications, clean APIs and reliable digital systems.",
   keywords: [
-    "full-stack developer",
-    "backend engineer",
+    "intermediate developer",
+    "myanmar developer",
+    "web developer",
     "API engineering",
-    "system architecture",
-    "Laravel",
-    "Go",
     "TypeScript",
     "Next.js",
   ],
-  authors: [{ name: "MG MG" }],
-  creator: "MG MG",
+  authors: [{ name: "Toewaioo" }],
+  creator: "Toewaioo",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "MG MG — Portfolio",
-    title: "MG MG — Senior Full-Stack Developer",
+    siteName: "Toewaioo — Portfolio",
+    title: "Toewaioo — Intermediate Developer",
     description:
-      "Senior Full-Stack Developer building scalable web applications, high-performance APIs, automation systems and production infrastructure.",
+      "Intermediate Developer from Myanmar building modern web applications, clean APIs and reliable digital systems.",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "MG MG — Senior Full-Stack Developer",
+    title: "Toewaioo — Intermediate Developer",
     description:
-      "Senior Full-Stack Developer building scalable web applications, high-performance APIs, automation systems and production infrastructure.",
+      "Intermediate Developer from Myanmar building modern web applications, clean APIs and reliable digital systems.",
   },
   robots: {
     index: true,
@@ -69,15 +67,15 @@ export const viewport: Viewport = {
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "MG MG",
-  jobTitle: "Senior Full-Stack Developer",
+  name: "Toewaioo",
+  jobTitle: "Intermediate Developer",
   description:
-    "Full-stack developer focused on backend architecture, API engineering and production infrastructure.",
+    "Developer from Myanmar focused on building clean, reliable and modern digital systems.",
   knowsAbout: [
-    "Backend Architecture",
+    "Web Development",
     "API Engineering",
     "Database Design",
-    "DevOps",
+    "Problem Solving",
   ],
   url: SITE_URL,
 };

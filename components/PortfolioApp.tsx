@@ -14,7 +14,7 @@ import Experience from "@/components/sections/Experience";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/Footer";
 
-const BOOT_KEY = "mgmg-boot-complete";
+const BOOT_KEY = "toewaioo-boot-complete";
 
 export default function PortfolioApp() {
   const [bootDone, setBootDone] = useState(false);

@@ -18,9 +18,9 @@ export type Profile = {
 
 // SAMPLE DATA — replace with real personal data before publishing.
 export const profile: Profile = {
-  name: "MG MG",
-  title: "Senior Full-Stack Developer",
-  tagline: "Designing, building and scaling modern digital systems.",
+  name: "Toewaioo",
+  title: "Intermediate Developer",
+  tagline: "Building modern digital systems from Myanmar.",
   availability: "Available for selected projects",
   location: "Myanmar",
   focus: [
