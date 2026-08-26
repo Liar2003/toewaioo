@@ -204,12 +204,12 @@ export default function TechnologyNodeMesh({
       <Html center zIndexRange={[10, 0]} style={{ pointerEvents: "none" }}>
         <div className="select-none whitespace-nowrap text-center font-mono">
           <div
-            className={`relative inline-flex items-center justify-center rounded-sm ${active ? "p-3" : "p-1"} backdrop-blur-sm transition-colors duration-300`}
+            className={`relative inline-flex items-center justify-center rounded-sm ${active ? "p-4" : "p-1"} backdrop-blur-sm transition-colors duration-300`}
             title={node.name}
             aria-label={node.name}
             role="img"
             style={{
-              border: `1px solid  ${active ? "transparent" : `${color}44`}`,
+              border: `1px solid  ${active ? color : `${color}44`}`,
               background: "rgba(3,5,8,.72)",
               boxShadow: active ? `0 0 10px ${color}66` : "none",
               ["--vf-color" as string]: color,
