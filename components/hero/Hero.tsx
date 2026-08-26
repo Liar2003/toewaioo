@@ -150,13 +150,15 @@ export default function Hero({ bootDone }: { bootDone: boolean }) {
             <StatusIndicator label="SYSTEM ONLINE" tone="online" />
           </div>
 
-          <h1 className="font-mono text-sm tracking-[0.4em] text-muted sm:text-base">
-            {profile.name.toUpperCase()}
+          {/* single semantic h1: name + role, visual styling preserved */}
+          <h1>
+            <span className="block font-mono text-sm tracking-[0.4em] text-muted sm:text-base">
+              {profile.name.toUpperCase()}
+            </span>
+            <span className="mt-3 block text-4xl font-extrabold leading-[1.05] tracking-tight text-frost sm:text-6xl lg:text-7xl">
+              <GlitchText text={typedTitle || "\u00A0"} />
+            </span>
           </h1>
-
-          <h2 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-tight text-frost sm:text-6xl lg:text-7xl">
-            <GlitchText text={typedTitle || "\u00A0"} />
-          </h2>
 
           <p className="mt-6 max-w-md font-mono text-xs leading-relaxed tracking-wider text-muted sm:text-sm">
             {profile.tagline}
@@ -185,7 +187,15 @@ export default function Hero({ bootDone }: { bootDone: boolean }) {
             }}
           />
         ) : (
-          <div className="hud-corner border border-neon/15 bg-black/50 px-6 py-4 font-mono text-[10px] tracking-[0.3em] text-muted backdrop-blur-sm">
+          <div className="vf-frame pointer-events-none relative bg-black/50 px-6 py-4 font-mono text-[10px] tracking-[0.3em] text-muted backdrop-blur-sm">
+            <span className="vf-corner vf-tl" aria-hidden="true" />
+            <span className="vf-corner vf-tr" aria-hidden="true" />
+            <span className="vf-corner vf-bl" aria-hidden="true" />
+            <span className="vf-corner vf-br" aria-hidden="true" />
+            <span className="vf-tick vf-tick-t" aria-hidden="true" />
+            <span className="vf-tick vf-tick-b" aria-hidden="true" />
+            <span className="vf-tick vf-tick-l" aria-hidden="true" />
+            <span className="vf-tick vf-tick-r" aria-hidden="true" />
             SCANNING GRID...
           </div>
         )}

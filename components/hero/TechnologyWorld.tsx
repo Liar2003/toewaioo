@@ -31,23 +31,22 @@ const EDGES: [string, string][] = [
   ["git", "typescript"],
 ];
 
-function useDisposableGeometry(build: () => THREE.BufferGeometry | null, deps: unknown[]) {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const geo = useMemo(build, deps);
-  useEffect(() => {
-    return () => {
-      geo?.dispose();
-    };
-  }, [geo]);
-  return geo;
-}
+/**
+ * Connection paths between nodes. Each link is a quadratic curve whose bow
+ * amount breathes over time — so every path automatically swings between a
+ * short (nearly straight) and long (strongly bowed) route. Geometry is one
+ * preallocated buffer rewritten in place each frame.
+ */
+const CURVE_SEGMENTS = 22;
 
 function ConnectionLines({
   activeId,
   positions,
+  reducedMotion,
 }: {
   activeId: string | null;
   positions: NodePositions;
+  reducedMotion: boolean;
 }) {
   const byId = useMemo(
     () => new Map(technologyNodes.map((n) => [n.id, n])),
@@ -56,46 +55,113 @@ function ConnectionLines({
   const posOf = (id: string): [number, number, number] | null =>
     positions[id] ?? byId.get(id)?.position ?? null;
 
-  const baseGeometry = useDisposableGeometry(() => {
-    const pts: number[] = [];
-    for (const [a, b] of EDGES) {
-      const na = posOf(a);
-      const nb = posOf(b);
-      if (!na || !nb) continue;
-      pts.push(...na, ...nb);
-    }
+  const makeGeometry = () => {
     const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
+    geo.setAttribute(
+      "position",
+      new THREE.BufferAttribute(new Float32Array(EDGES.length * CURVE_SEGMENTS * 2 * 3), 3)
+    );
+    geo.setDrawRange(0, 0);
     return geo;
-  }, [positions]);
+  };
 
-  const activeGeometry = useDisposableGeometry(() => {
-    if (!activeId) return null;
-    const node = posOf(activeId);
-    if (!node) return null;
-    const pts: number[] = [];
-    for (const [a, b] of EDGES) {
-      const other = a === activeId ? b : b === activeId ? a : null;
-      if (!other) continue;
-      const no = posOf(other);
-      if (!no) continue;
-      pts.push(...node, ...no);
-    }
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
-    return geo;
-  }, [positions, activeId]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const baseGeometry = useMemo(makeGeometry, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const activeGeometry = useMemo(makeGeometry, []);
+
+  useEffect(() => {
+    return () => {
+      baseGeometry.dispose();
+      activeGeometry.dispose();
+    };
+  }, [baseGeometry, activeGeometry]);
+
+  const vec = useMemo(
+    () => ({
+      a: new THREE.Vector3(),
+      b: new THREE.Vector3(),
+      ctrl: new THREE.Vector3(),
+      p0: new THREE.Vector3(),
+      p1: new THREE.Vector3(),
+      dir: new THREE.Vector3(),
+      perp: new THREE.Vector3(),
+    }),
+    []
+  );
+
+  useFrame((state) => {
+    const t = reducedMotion ? 0 : state.clock.elapsedTime;
+    const base = baseGeometry.attributes.position.array as Float32Array;
+    const active = activeGeometry.attributes.position.array as Float32Array;
+    let vi = 0;
+    let va = 0;
+
+    EDGES.forEach(([aId, bId], i) => {
+      const pa = posOf(aId);
+      const pb = posOf(bId);
+      if (!pa || !pb) return;
+
+      vec.a.set(...pa);
+      vec.b.set(...pb);
+      vec.dir.subVectors(vec.b, vec.a);
+      // perpendicular in the ground plane gives the bow its direction
+      vec.perp.set(-vec.dir.z, 0, vec.dir.x).normalize();
+
+      // layered sines per edge -> each path independently stretches/relaxes
+      const amp =
+        Math.sin(t * 0.55 + i * 1.93) * 0.6 +
+        Math.sin(t * 0.27 + i * 0.71) * 0.45;
+      vec.ctrl
+        .addVectors(vec.a, vec.b)
+        .multiplyScalar(0.5)
+        .addScaledVector(vec.perp, amp);
+
+      for (let s = 0; s < CURVE_SEGMENTS; s++) {
+        const u0 = s / CURVE_SEGMENTS;
+        const u1 = (s + 1) / CURVE_SEGMENTS;
+        const w00 = (1 - u0) * (1 - u0);
+        const w01 = 2 * (1 - u0) * u0;
+        const w02 = u0 * u0;
+        vec.p0.set(
+          w00 * vec.a.x + w01 * vec.ctrl.x + w02 * vec.b.x,
+          w00 * vec.a.y + w01 * vec.ctrl.y + w02 * vec.b.y,
+          w00 * vec.a.z + w01 * vec.ctrl.z + w02 * vec.b.z
+        );
+        const w10 = (1 - u1) * (1 - u1);
+        const w11 = 2 * (1 - u1) * u1;
+        const w12 = u1 * u1;
+        vec.p1.set(
+          w10 * vec.a.x + w11 * vec.ctrl.x + w12 * vec.b.x,
+          w10 * vec.a.y + w11 * vec.ctrl.y + w12 * vec.b.y,
+          w10 * vec.a.z + w11 * vec.ctrl.z + w12 * vec.b.z
+        );
+
+        base[vi++] = vec.p0.x; base[vi++] = vec.p0.y; base[vi++] = vec.p0.z;
+        base[vi++] = vec.p1.x; base[vi++] = vec.p1.y; base[vi++] = vec.p1.z;
+
+        const isActiveEdge = activeId !== null && (aId === activeId || bId === activeId);
+        if (isActiveEdge) {
+          active[va++] = vec.p0.x; active[va++] = vec.p0.y; active[va++] = vec.p0.z;
+          active[va++] = vec.p1.x; active[va++] = vec.p1.y; active[va++] = vec.p1.z;
+        }
+      }
+    });
+
+    baseGeometry.setDrawRange(0, vi / 3);
+    baseGeometry.attributes.position.needsUpdate = true;
+    activeGeometry.setDrawRange(0, va / 3);
+    activeGeometry.attributes.position.needsUpdate = true;
+  });
 
   return (
     <>
-      <lineSegments geometry={baseGeometry ?? undefined}>
+      <lineSegments geometry={baseGeometry} frustumCulled={false}>
         <lineBasicMaterial color="#0E3A3A" transparent opacity={0.5} />
       </lineSegments>
-      {activeGeometry && (
-        <lineSegments geometry={activeGeometry}>
-          <lineBasicMaterial color="#00F5A0" transparent opacity={0.85} />
-        </lineSegments>
-      )}
+      <lineSegments geometry={activeGeometry} frustumCulled={false}>
+        <lineBasicMaterial color="#00F5A0" transparent opacity={0.85} />
+      </lineSegments>
     </>
   );
 }
@@ -339,7 +405,7 @@ export default function TechnologyWorld({
         />
 
         <DataMarkers />
-        <ConnectionLines activeId={activeNodeId} positions={positions} />
+        <ConnectionLines activeId={activeNodeId} positions={positions} reducedMotion={reducedMotion} />
 
         {technologyNodes.map((node) => (
           <TechnologyNodeMesh

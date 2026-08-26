@@ -1,6 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_LOCALE,
+} from "@/data/site";
+import { profile } from "@/data/profile";
+import { techCategories } from "@/data/techStack";
+import { projects } from "@/data/projects";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,47 +25,42 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-// PLACEHOLDER domain — replace before production deployment.
-const SITE_URL = "https://example.com";
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Toewaioo — Intermediate Developer",
-    template: "%s | Toewaioo",
+    default: SITE_TITLE,
+    template: `%s | ${profile.name}`,
   },
-  description:
-    "Intermediate Developer from Myanmar building modern web applications, clean APIs and reliable digital systems.",
-  keywords: [
-    "intermediate developer",
-    "myanmar developer",
-    "web developer",
-    "API engineering",
-    "TypeScript",
-    "Next.js",
-  ],
-  authors: [{ name: "Toewaioo" }],
-  creator: "Toewaioo",
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
+  category: "technology",
+  authors: [{ name: profile.name, url: SITE_URL }],
+  creator: profile.name,
+  publisher: profile.name,
   alternates: { canonical: "/" },
   openGraph: {
-    type: "website",
+    type: "profile",
     url: SITE_URL,
-    siteName: "Toewaioo — Portfolio",
-    title: "Toewaioo — Intermediate Developer",
-    description:
-      "Intermediate Developer from Myanmar building modern web applications, clean APIs and reliable digital systems.",
-    locale: "en_US",
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    locale: SITE_LOCALE,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Toewaioo — Intermediate Developer",
-    description:
-      "Intermediate Developer from Myanmar building modern web applications, clean APIs and reliable digital systems.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -64,21 +70,73 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const personJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Toewaioo",
-  jobTitle: "Intermediate Developer",
-  description:
-    "Developer from Myanmar focused on building clean, reliable and modern digital systems.",
-  knowsAbout: [
-    "Web Development",
-    "API Engineering",
-    "Database Design",
-    "Problem Solving",
-  ],
-  url: SITE_URL,
-};
+/** Structured data: Person + WebSite + ProfilePage + project ItemList. */
+function buildJsonLd() {
+  const sameAs = [
+    profile.socials.github,
+    profile.socials.linkedin,
+    profile.socials.telegram,
+    profile.socials.website,
+  ].filter(Boolean);
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": `${SITE_URL}/#person`,
+        name: profile.name,
+        jobTitle: profile.title,
+        description:
+          "Developer from Myanmar focused on building clean, reliable and modern digital systems.",
+        url: SITE_URL,
+        image: `${SITE_URL}/opengraph-image`,
+        email: profile.socials.email || undefined,
+        address: { "@type": "PostalAddress", addressCountry: "MM" },
+        knowsAbout: [
+          ...profile.focus,
+          ...techCategories.flatMap((c) => c.items),
+        ],
+        sameAs: sameAs.length > 0 ? sameAs : undefined,
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: SITE_NAME,
+        description: SITE_DESCRIPTION,
+        inLanguage: "en-US",
+        publisher: { "@id": `${SITE_URL}/#person` },
+      },
+      {
+        "@type": "ProfilePage",
+        "@id": `${SITE_URL}/#profilepage`,
+        url: SITE_URL,
+        name: SITE_TITLE,
+        description: SITE_DESCRIPTION,
+        inLanguage: "en-US",
+        mainEntity: { "@id": `${SITE_URL}/#person` },
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${SITE_URL}/#projects`,
+        name: "Projects",
+        itemListElement: projects.map((project, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          item: {
+            "@type": "CreativeWork",
+            name: project.name,
+            description: project.description,
+            keywords: project.technologies.join(", "),
+            url: `${SITE_URL}/#projects`,
+            creator: { "@id": `${SITE_URL}/#person` },
+          },
+        })),
+      },
+    ],
+  };
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -86,7 +144,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd()) }}
         />
         {children}
       </body>

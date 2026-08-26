@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
-
-// PLACEHOLDER domain — replace before production deployment.
-const SITE_URL = "https://example.com";
+import { SITE_URL } from "@/data/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/" },
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/api/"],
+    },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

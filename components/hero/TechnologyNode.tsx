@@ -5,6 +5,7 @@ import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import * as THREE from "three";
 import type { TechnologyNode as TechNodeType } from "./types";
+import TechIcon from "./TechIcon";
 
 function makeGlowTexture(): THREE.Texture {
   const size = 128;
@@ -208,13 +209,16 @@ export default function TechnologyNodeMesh({
         </mesh>
       )}
 
-      {/* label — fixed pixel size so it stays crisp on the flat map */}
+      {/* label — icon-only mark, fixed pixel size so it stays crisp on the flat map */}
       <Html center zIndexRange={[20, 0]} style={{ pointerEvents: "none" }}>
         <div className="select-none whitespace-nowrap text-center font-mono">
           <div
-            className="relative inline-block border px-2 py-1 backdrop-blur-sm transition-colors duration-300"
+            className="relative inline-flex items-center justify-center rounded-sm p-2 backdrop-blur-sm transition-colors duration-300"
+            title={node.name}
+            aria-label={node.name}
+            role="img"
             style={{
-              borderColor: active ? color : `${color}44`,
+              border: `1px solid ${active ? color : `${color}44`}`,
               background: "rgba(3,5,8,.72)",
               boxShadow: active ? `0 0 18px ${color}66` : "none",
             }}
@@ -225,28 +229,15 @@ export default function TechnologyNodeMesh({
                 <span className="absolute -top-px -right-px h-1.5 w-1.5 border-t border-r" style={{ borderColor: color }} />
                 <span className="absolute -bottom-px -left-px h-1.5 w-1.5 border-b border-l" style={{ borderColor: color }} />
                 <span className="absolute -bottom-px -right-px h-1.5 w-1.5 border-b border-r" style={{ borderColor: color }} />
-                <div
-                  className="mb-0.5 font-mono text-[7px] tracking-[0.3em]"
-                  style={{ color }}
-                >
-                  TARGET LOCKED
-                </div>
               </>
             )}
-            <div
-              className="text-[10px] font-bold leading-none tracking-[0.2em]"
-              style={{ color: active ? color : "#E8F1F5" }}
-            >
-              {node.name}
-            </div>
-            {!compactLabels && (
-              <div className="mt-1 text-[7px] uppercase tracking-[0.25em] text-[#71808A]">
-                {node.category}
-              </div>
-            )}
+            <TechIcon id={node.id} size={compactLabels ? 16 : 22} color={active || hovered ? color : "#E8F1F5"} />
           </div>
           {hovered && !compactLabels && (
             <div className="mx-auto mt-1 max-w-[160px] border border-neon/30 bg-black/85 px-2 py-1 text-[6px] normal-case leading-relaxed tracking-normal text-frost">
+              <span className="mb-0.5 block text-[8px] font-bold uppercase tracking-[0.25em]" style={{ color }}>
+                {node.name}
+              </span>
               {node.description}
             </div>
           )}

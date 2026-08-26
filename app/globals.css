@@ -147,6 +147,53 @@ body {
       0 0 36px rgba(0, 217, 255, 0.18);
   }
 
+  /* camera-viewfinder frame: corner brackets + mid-edge ticks, no square border */
+  .vf-frame {
+    --vf-color: rgba(0, 245, 160, 0.9);
+  }
+  .vf-corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-color: var(--vf-color);
+    border-style: solid;
+    pointer-events: none;
+    filter: drop-shadow(0 0 4px var(--vf-color));
+  }
+  .vf-tl { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+  .vf-tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
+  .vf-bl { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+  .vf-br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+  .vf-tick {
+    position: absolute;
+    background: var(--vf-color);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .vf-tick-t { top: -1px; left: 50%; width: 14px; height: 2px; transform: translateX(-50%); }
+  .vf-tick-b { bottom: -1px; left: 50%; width: 14px; height: 2px; transform: translateX(-50%); }
+  .vf-tick-l { left: -1px; top: 50%; width: 2px; height: 14px; transform: translateY(-50%); }
+  .vf-tick-r { right: -1px; top: 50%; width: 2px; height: 14px; transform: translateY(-50%); }
+
+  /* one-shot autofocus sweep across the frame */
+  .vf-sweep {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .vf-sweep::before {
+    content: "";
+    position: absolute;
+    left: 6%;
+    right: 6%;
+    top: 8%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--vf-color), transparent);
+    animation: vf-sweep 0.65s ease-out 0.08s both;
+  }
+
   .btn-hud {
     @apply relative inline-flex items-center justify-center gap-2 border px-5 py-2.5 font-mono text-xs tracking-[0.2em] transition-all duration-300;
     border-color: rgba(0, 245, 160, 0.4);
@@ -186,6 +233,24 @@ body {
     border-color: rgba(0, 245, 160, 0.6);
     box-shadow: 0 0 12px rgba(0, 245, 160, 0.12);
   }
+}
+
+@keyframes vf-sweep {
+  0% { top: 8%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 90%; opacity: 0; }
+}
+
+/* camera focus punch-in: frame snaps from wide/soft to locked/sharp */
+@keyframes focus-lock {
+  0% { transform: scale(1.16); opacity: 0; filter: blur(3px); }
+  30% { opacity: 1; }
+  55% { transform: scale(0.975); filter: blur(0); }
+  100% { transform: scale(1); opacity: 1; filter: blur(0); }
+}
+.animate-focus-lock {
+  animation: focus-lock 0.45s cubic-bezier(0.2, 0.8, 0.25, 1) both;
 }
 
 @keyframes glitch-a {
