@@ -157,10 +157,10 @@ function ConnectionLines({
   return (
     <>
       <lineSegments geometry={baseGeometry} frustumCulled={false}>
-        <lineBasicMaterial color="#0E3A3A" transparent opacity={0.5} />
+        <lineBasicMaterial color="#f80419" transparent opacity={0.5} />
       </lineSegments>
       <lineSegments geometry={activeGeometry} frustumCulled={false}>
-        <lineBasicMaterial color="#00F5A0" transparent opacity={0.85} />
+        <lineBasicMaterial color="#00f514" transparent opacity={0.85} />
       </lineSegments>
     </>
   );
@@ -394,11 +394,11 @@ export default function TechnologyWorld({
         <Grid
           infiniteGrid
           cellSize={0.9}
-          sectionSize={4.5}
+          sectionSize={0.5}
           cellColor="#0B1E26"
           sectionColor="#00F5A0"
-          cellThickness={0.6}
-          sectionThickness={1}
+          cellThickness={0.1}
+          sectionThickness={0.5}
           fadeDistance={40}
           fadeStrength={1.4}
           position={[0, 0, 0]}
