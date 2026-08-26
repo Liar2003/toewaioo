@@ -58,7 +58,6 @@ export default function TechnologyNodeMesh({
   const groupRef = useRef<THREE.Group>(null);
   const coreRef = useRef<THREE.Mesh>(null);
   const shellRef = useRef<THREE.LineSegments>(null);
-  const ringRef = useRef<THREE.Mesh>(null);
   const spriteRef = useRef<THREE.Sprite>(null);
   const [hovered, setHovered] = useState(false);
 
@@ -201,37 +200,36 @@ export default function TechnologyNodeMesh({
         <lineBasicMaterial color={color} transparent opacity={0.45} />
       </lineSegments>
 
-      {/* active pulse ring */}
-      {active && (
-        <mesh ref={ringRef} rotation={[-Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[0.5, 0.008, 8, 48]} />
-          <meshBasicMaterial color={color} transparent opacity={0.4} depthWrite={false} />
-        </mesh>
-      )}
-
       {/* label — icon-only mark, fixed pixel size so it stays crisp on the flat map */}
-      <Html center zIndexRange={[20, 0]} style={{ pointerEvents: "none" }}>
+      <Html center zIndexRange={[10, 0]} style={{ pointerEvents: "none" }}>
         <div className="select-none whitespace-nowrap text-center font-mono">
           <div
-            className="relative inline-flex items-center justify-center rounded-sm p-2 backdrop-blur-sm transition-colors duration-300"
+            className={`relative inline-flex items-center justify-center rounded-sm ${active ? "p-3" : "p-1"} backdrop-blur-sm transition-colors duration-300`}
             title={node.name}
             aria-label={node.name}
             role="img"
             style={{
-              border: `1px solid ${active ? color : `${color}44`}`,
+              border: `1px solid  ${active ? "transparent" : `${color}44`}`,
               background: "rgba(3,5,8,.72)",
-              boxShadow: active ? `0 0 18px ${color}66` : "none",
+              boxShadow: active ? `0 0 10px ${color}66` : "none",
+              ["--vf-color" as string]: color,
             }}
           >
+            {/* camera focus brackets */}
             {active && (
               <>
-                <span className="absolute -top-px -left-px h-1.5 w-1.5 border-t border-l" style={{ borderColor: color }} />
-                <span className="absolute -top-px -right-px h-1.5 w-1.5 border-t border-r" style={{ borderColor: color }} />
-                <span className="absolute -bottom-px -left-px h-1.5 w-1.5 border-b border-l" style={{ borderColor: color }} />
-                <span className="absolute -bottom-px -right-px h-1.5 w-1.5 border-b border-r" style={{ borderColor: color }} />
+                <span className="vf-corner vf-tl" aria-hidden="true" />
+                <span className="vf-corner vf-tr" aria-hidden="true" />
+                <span className="vf-corner vf-bl" aria-hidden="true" />
+                <span className="vf-corner vf-br" aria-hidden="true" />
+                {/* <span className="vf-tick vf-tick-t" aria-hidden="true" />
+                <span className="vf-tick vf-tick-b" aria-hidden="true" />
+                <span className="vf-tick vf-tick-l" aria-hidden="true" />
+                <span className="vf-tick vf-tick-r" aria-hidden="true" /> */}
+                <span className="vf-sweep" aria-hidden="true" />
               </>
             )}
-            <TechIcon id={node.id} size={compactLabels ? 16 : 22} color={active || hovered ? color : "#E8F1F5"} />
+            <TechIcon id={node.id} size={active ? (compactLabels ? 24 : 32) : compactLabels ? 16 : 22} color={active || hovered ? color : "#E8F1F5"} />
           </div>
           {hovered && !compactLabels && (
             <div className="mx-auto mt-1 max-w-[160px] border border-neon/30 bg-black/85 px-2 py-1 text-[6px] normal-case leading-relaxed tracking-normal text-frost">

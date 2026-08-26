@@ -153,17 +153,17 @@ body {
   }
   .vf-corner {
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     border-color: var(--vf-color);
     border-style: solid;
     pointer-events: none;
-    filter: drop-shadow(0 0 4px var(--vf-color));
+    filter: drop-shadow(0 0 7px var(--vf-color));
   }
-  .vf-tl { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
-  .vf-tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
-  .vf-bl { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
-  .vf-br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+  .vf-tl { top: -6px; left: -6px; border-width: 3px 0 0 3px; }
+  .vf-tr { top: -6px; right: -6px; border-width: 3px 3px 0 0; }
+  .vf-bl { bottom: -6px; left: -6px; border-width: 0 0 3px 3px; }
+  .vf-br { bottom: -6px; right: -6px; border-width: 0 3px 3px 0; }
 
   .vf-tick {
     position: absolute;
@@ -171,10 +171,10 @@ body {
     opacity: 0.7;
     pointer-events: none;
   }
-  .vf-tick-t { top: -1px; left: 50%; width: 14px; height: 2px; transform: translateX(-50%); }
-  .vf-tick-b { bottom: -1px; left: 50%; width: 14px; height: 2px; transform: translateX(-50%); }
-  .vf-tick-l { left: -1px; top: 50%; width: 2px; height: 14px; transform: translateY(-50%); }
-  .vf-tick-r { right: -1px; top: 50%; width: 2px; height: 14px; transform: translateY(-50%); }
+  .vf-tick-t { top: -2px; left: 50%; width: 22px; height: 3px; transform: translateX(-50%); }
+  .vf-tick-b { bottom: -2px; left: 50%; width: 22px; height: 3px; transform: translateX(-50%); }
+  .vf-tick-l { left: -2px; top: 50%; width: 3px; height: 22px; transform: translateY(-50%); }
+  .vf-tick-r { right: -2px; top: 50%; width: 3px; height: 22px; transform: translateY(-50%); }
 
   /* one-shot autofocus sweep across the frame */
   .vf-sweep {

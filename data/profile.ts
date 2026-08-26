@@ -19,8 +19,8 @@ export type Profile = {
 // SAMPLE DATA — replace with real personal data before publishing.
 export const profile: Profile = {
   name: "Toewaioo",
-  title: "Intermediate Developer",
-  tagline: "Building modern digital systems from Myanmar.",
+  title: "Junior Developer",
+  tagline: "Building modern digital systems with a focus on performance, reliability, scalability and clean architecture.",
   availability: "Available for selected projects",
   location: "Myanmar",
   focus: [
@@ -44,10 +44,10 @@ export const profile: Profile = {
   ],
   // PLACEHOLDERS — never invent URLs. Fill before publishing.
   socials: {
-    github: "",
-    telegram: "",
-    linkedin: "",
-    email: "",
-    website: "",
+    github: "https://github.com/toewaioo",
+    telegram: "https://t.me/toewaioo_dev",
+    linkedin: "https://linkedin.com/in/toewaioo_dev",
+    email: "toewaioo.dev@gmmail.com",
+    website: "https://toewaioo.vercel.app",
   },
 };

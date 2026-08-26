@@ -50,5 +50,5 @@ type Props = {
 export default function TechIcon({ id, size = 20, color }: Props) {
   const Icon = ICONS[id];
   if (!Icon) return null;
-  return <Icon size={size} color={color} aria-hidden="true" />;
+  return <Icon  size={size} color={color} aria-hidden="true" />;
 }
