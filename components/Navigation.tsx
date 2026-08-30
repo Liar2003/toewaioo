@@ -45,14 +45,14 @@ export default function Navigation() {
         }`}
       >
         <nav
-          className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 sm:px-12 lg:px-16"
+          className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-4 sm:px-12 lg:px-16"
           aria-label="Primary"
         >
           <a
             href="#hero"
-            className="font-mono text-sm font-bold tracking-[0.3em] text-frost transition-colors hover:text-neon"
+            className="min-w-0 font-mono text-xs font-bold tracking-[0.25em] text-frost transition-colors hover:text-neon sm:text-sm sm:tracking-[0.3em]"
           >
-            <GlitchText text={`[${profile.name.toUpperCase()}]`} className="text-sm" />
+            <GlitchText text={`[${profile.name.toUpperCase()}]`} className="text-xs sm:text-sm" />
           </a>
 
           {/* desktop links */}
@@ -77,9 +77,10 @@ export default function Navigation() {
           {/* mobile menu trigger */}
           <button
             onClick={() => setOpen(true)}
-            className="btn-hud !px-3 !py-1.5 !text-[10px] md:hidden"
+            className="btn-hud shrink-0 !px-3 !py-1.5 !text-[10px] md:hidden"
             aria-expanded={open}
             aria-controls="mobile-command-menu"
+            aria-label="Open command menu"
           >
             &gt; MENU
           </button>
@@ -121,7 +122,7 @@ export default function Navigation() {
                     <a
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className="group flex items-baseline gap-4 font-mono text-2xl font-bold tracking-widest text-frost transition-colors hover:text-neon"
+                      className="group flex items-baseline gap-3 font-mono text-xl font-bold tracking-widest text-frost transition-colors hover:text-neon sm:gap-4 sm:text-2xl"
                     >
                       <span className="text-xs text-cyan">[{String(i + 1).padStart(2, "0")}]</span>
                       {link.label}
