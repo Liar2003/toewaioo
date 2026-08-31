@@ -1,6 +1,6 @@
 // Single source of truth for site identity & SEO.
 // PLACEHOLDER domain — replace before production deployment.
-export const SITE_URL = "https://example.com";
+export const SITE_URL = "https://toewaioo.vercel.app";
 
 export const SITE_NAME = "Toewaioo — Portfolio";
 
