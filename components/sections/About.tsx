@@ -55,6 +55,34 @@ export default function About() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [finePointer]);
 
+  useEffect(() => {
+    const image = new Image();
+    image.src = "/images/operator-portrait.jpg";
+    const handleLoad = () => setAvatarLoaded(true);
+    const handleError = () => setAvatarLoaded(true);
+
+    image.onload = handleLoad;
+    image.onerror = handleError;
+
+    if (image.complete) {
+      handleLoad();
+    }
+  }, []);
+
+  useEffect(() => {
+    const image = new Image();
+    image.src = "/images/skills-map.svg";
+    const handleLoad = () => setSkillsLoaded(true);
+    const handleError = () => setSkillsLoaded(true);
+
+    image.onload = handleLoad;
+    image.onerror = handleError;
+
+    if (image.complete) {
+      handleLoad();
+    }
+  }, []);
+
   const reduced = useRef(
     typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -146,10 +174,14 @@ export default function About() {
             status={{ label: "ACTIVE", tone: "online" }}
             className="h-full relative overflow-hidden"
           >
-            <div className="relative p-6">
+            <div className="relative p-4 sm:p-6">
               {/* Avatar Image with hover effects */}
-              <div className="relative mx-auto max-w-xs mb-6">
-                <div className="relative aspect-square overflow-hidden rounded-xl border border-neon/20 bg-gradient-to-br from-panel/50 to-panel/20">
+              <motion.div
+                className="relative mx-auto mb-6 w-full max-w-[360px]"
+                whileHover={finePointer ? { y: -6, scale: 1.01 } : undefined}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+              >
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[26px] border border-neon/20 bg-[radial-gradient(circle_at_top,_rgba(0,245,160,0.12),_transparent_35%),linear-gradient(135deg,_#071014_0%,_#0a1117_35%,_#030508_100%)] shadow-[0_0_28px_rgba(0,245,160,0.12),0_30px_80px_rgba(2,8,12,0.7)]">
                   {/* Glow ring behind avatar */}
                   <motion.div
                     className="absolute inset-0"
@@ -163,45 +195,42 @@ export default function About() {
                     }}
                   />
                   
-                  <AnimatePresence mode="wait">
-                    {!avatarLoaded && (
-                      <motion.div
-                        key="loading"
-                        className="absolute inset-0 flex items-center justify-center"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
-                        <div className="text-center">
-                          <motion.div
-                            className="mx-auto h-16 w-16 border-2 border-neon/20 border-t-neon rounded-full animate-spin"
-                          />
-                          <p className="mt-4 font-mono text-[9px] tracking-[0.3em] text-neon/60">LOADING AVATAR</p>
-                          <motion.div
-                            className="mt-2 h-px w-32 mx-auto bg-neon/30 overflow-hidden"
-                            animate={{ width: ["0%", "100%", "0%"] }}
-                            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                          >
-                            <div className="h-full w-1/3 bg-neon animate-ping" />
-                          </motion.div>
-                        </div>
-                      </motion.div>
-                    )}
-                    {avatarLoaded && (
-                      <motion.img
-                        key="avatar"
-                        src="/images/profile-avatar.svg"
-                        alt={`${profile.name} — Full-Stack Engineer avatar`}
-                        className="absolute inset-0 w-full h-full object-cover"
-                        onLoad={() => setAvatarLoaded(true)}
-                        onError={() => setAvatarLoaded(true)}
-                        style={{ filter: "contrast(1.05) saturate(1.1)" }}
-                        initial={{ scale: 1.1, opacity: 0, filter: "blur(10px)" }}
-                        animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
-                        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-                      />
-                    )}
-                  </AnimatePresence>
+                  {!avatarLoaded ? (
+                    <motion.div
+                      key="loading"
+                      className="absolute inset-0 flex items-center justify-center"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <div className="text-center">
+                        <motion.div
+                          className="mx-auto h-16 w-16 border-2 border-neon/20 border-t-neon rounded-full animate-spin"
+                        />
+                        <p className="mt-4 font-mono text-[9px] tracking-[0.3em] text-neon/60">LOADING AVATAR</p>
+                        <motion.div
+                          className="mt-2 h-px w-32 mx-auto bg-neon/30 overflow-hidden"
+                          animate={{ width: ["0%", "100%", "0%"] }}
+                          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                        >
+                          <div className="h-full w-1/3 bg-neon animate-ping" />
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.img
+                      key="avatar"
+                      src="/images/operator-portrait.jpg"
+                      alt={`${profile.name} — Full-Stack Engineer portrait`}
+                      className="absolute inset-0 w-full h-full object-cover object-center"
+                      onLoad={() => setAvatarLoaded(true)}
+                      onError={() => setAvatarLoaded(true)}
+                      style={{ filter: "contrast(1.05) saturate(1.1)" }}
+                      initial={{ scale: 1.1, opacity: 0, filter: "blur(10px)" }}
+                      animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    />
+                  )}
 
                   {/* Corner brackets overlay */}
                   <div className="absolute inset-0 pointer-events-none">
@@ -229,7 +258,7 @@ export default function About() {
                     transition={{ duration: 2, repeat: Infinity }}
                   />
                 </div>
-              </div>
+              </motion.div>
 
               {/* Name & Title */}
               <motion.div
@@ -384,12 +413,16 @@ export default function About() {
           cornerColor="rgba(0,217,255,.55)"
           status={{ label: "MAPPED", tone: "online" }}
         >
-          <div className="relative p-6">
+          <motion.div
+            className="relative overflow-hidden rounded-[22px] border border-neon/15 bg-[radial-gradient(circle_at_top,_rgba(0,217,255,0.12),_transparent_35%),rgba(5,11,13,0.82)] p-3 shadow-[0_0_30px_rgba(0,217,255,0.08)] sm:p-6"
+            whileHover={finePointer ? { y: -4 } : undefined}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          >
             <AnimatePresence mode="wait">
               {!skillsLoaded && (
                 <motion.div
                   key="loading"
-                  className="aspect-[2/1] flex items-center justify-center bg-gradient-to-br from-panel/50 to-panel/20 border border-neon/10 rounded-sm"
+                  className="flex aspect-[16/9] items-center justify-center rounded-md border border-neon/10 bg-gradient-to-br from-panel/60 to-panel/20"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -414,16 +447,17 @@ export default function About() {
                   key="skills"
                   src="/images/skills-map.svg"
                   alt="Skills topology map showing Full-Stack Engineer at center connected to Backend, Frontend, Database, DevOps, Architecture, API Engineering, Automation, and Security"
-                  className="w-full h-auto max-h-[300px] object-contain"
+                  className="mx-auto h-auto w-full max-w-5xl object-contain"
                   onLoad={() => setSkillsLoaded(true)}
                   onError={() => setSkillsLoaded(true)}
-                  style={{ filter: "contrast(1.05) saturate(1.1)" }}
+                  style={{ filter: "contrast(1.08) saturate(1.1)" }}
                   initial={{ scale: 1.02, opacity: 0, filter: "blur(8px)" }}
                   animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
                   transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
                 />
               )}
             </AnimatePresence>
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,_rgba(255,255,255,0.03),_transparent_25%,_transparent_75%,_rgba(255,255,255,0.015))]" />
 
             {/* Interactive legend */}
             <motion.div
@@ -458,7 +492,7 @@ export default function About() {
                 </motion.div>
               ))}
             </motion.div>
-          </div>
+          </motion.div>
         </HUDPanel>
       </motion.div>
 
