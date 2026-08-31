@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView, useMotionValue, useSpring } from "framer-motion";
 import SectionHeading from "@/components/ui/SectionHeading";
 import HUDPanel from "@/components/ui/HUDPanel";
+import { usePrefersFinePointer } from "@/components/ui/hooks";
 import { techCategories } from "@/data/techStack";
 import { Hexagon, Layers, Code, Server, Database, Globe, Shield, Loader2 } from "lucide-react";
 
@@ -28,6 +29,21 @@ export default function TechStack() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const finePointer = usePrefersFinePointer();
+
+  useEffect(() => {
+    const image = new Image();
+    image.src = "/images/tech-constellation.svg";
+    const handleLoad = () => setImageLoaded(true);
+    const handleError = () => setImageLoaded(true);
+
+    image.onload = handleLoad;
+    image.onerror = handleError;
+
+    if (image.complete) {
+      handleLoad();
+    }
+  }, []);
 
   return (
     <section
@@ -88,12 +104,16 @@ export default function TechStack() {
           cornerColor="rgba(0,217,255,.55)"
           status={{ label: inView ? "MAPPED" : "LOADING", tone: inView ? "online" : "idle" }}
         >
-          <div className="relative p-4 sm:p-6">
+          <motion.div
+            className="relative overflow-hidden rounded-[22px] border border-neon/15 bg-[radial-gradient(circle_at_top,_rgba(0,245,160,0.12),_transparent_35%),rgba(5,11,13,0.82)] p-3 shadow-[0_0_30px_rgba(0,245,160,0.08)] sm:p-6"
+            whileHover={finePointer ? { y: -4 } : undefined}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          >
             <AnimatePresence mode="wait">
               {!imageLoaded && (
                 <motion.div
                   key="loading"
-                  className="aspect-[2/1] flex items-center justify-center bg-gradient-to-br from-panel/50 to-panel/20 border border-neon/10 rounded-sm"
+                  className="flex aspect-[16/9] items-center justify-center rounded-md border border-neon/10 bg-gradient-to-br from-panel/60 to-panel/20"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -116,17 +136,18 @@ export default function TechStack() {
                   key="constellation"
                   src="/images/tech-constellation.svg"
                   alt="Technology constellation map showing backend, frontend, data, and infrastructure clusters with connections"
-                  className="w-full h-auto max-h-[350px] object-contain"
+                  className="mx-auto h-auto w-full max-w-5xl object-contain"
                   onLoad={() => setImageLoaded(true)}
                   onError={() => setImageLoaded(true)}
-                  style={{ filter: "contrast(1.05) saturate(1.1)" }}
+                  style={{ filter: "contrast(1.08) saturate(1.1)" }}
                   initial={{ scale: 1.02, opacity: 0, filter: "blur(8px)" }}
                   animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
                   transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
                 />
               )}
             </AnimatePresence>
-          </div>
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,_rgba(255,255,255,0.03),_transparent_25%,_transparent_75%,_rgba(255,255,255,0.015))]" />
+          </motion.div>
         </HUDPanel>
       </motion.div>
 

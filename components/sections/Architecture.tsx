@@ -221,7 +221,7 @@ export default function Architecture() {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main topology map */}
         <motion.div
-          className="lg:col-span-2"
+          className="min-w-0 lg:col-span-2"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
@@ -232,10 +232,11 @@ export default function Architecture() {
             status={{ label: inView ? "TRAFFIC FLOWING" : "STANDBY", tone: inView ? "online" : "idle" }}
             cornerColor="rgba(0,217,255,.55)"
           >
-            <div ref={ref} className="overflow-x-auto p-4 sm:p-8">
+            <div ref={ref} className="overflow-hidden p-2 sm:p-6 lg:p-8">
               <svg
                 viewBox="0 0 800 600"
-                className="mx-auto min-w-[560px] max-w-3xl font-mono"
+                className="mx-auto block h-auto w-full max-w-[720px] font-mono"
+                preserveAspectRatio="xMidYMid meet"
                 role="img"
                 aria-label="Architecture diagram: clients connect through Nginx to REST and WebSocket APIs, into the application layer, through Redis queue to workers and PostgreSQL"
               >

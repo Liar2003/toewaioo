@@ -109,12 +109,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     <>
       <motion.article
         ref={cardRef}
-        className="hud-corner group relative border bg-panel/70 backdrop-blur-sm overflow-hidden"
+        className="hud-corner group relative z-10 border bg-panel/70 backdrop-blur-sm overflow-hidden"
         style={{
           transformStyle: "preserve-3d",
           transform: reduced
             ? undefined
             : `perspective(1000px) rotateX(${springTiltX.get()}deg) rotateY(${springTiltY.get()}deg) scale(${springScale.get()})`,
+          zIndex: hovered ? 30 : 10,
           transition:
             tilt.rx === 0 && tilt.ry === 0 && tilt.scale === 1
               ? "transform .6s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
