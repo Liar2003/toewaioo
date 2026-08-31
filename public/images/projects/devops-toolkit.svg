@@ -1,0 +1,296 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" width="600" height="340">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#030508"/>
+      <stop offset="100%" style="stop-color:#071014"/>
+    </linearGradient>
+    <linearGradient id="terminalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1117"/>
+      <stop offset="100%" style="stop-color:#071014"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="scanline" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0 0.02" numOctaves="1" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.03 0" in="noise"/>
+    </filter>
+    <filter id="cursorBlink" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <rect width="600" height="340" fill="url(#bgGrad)"/>
+  
+  <!-- Grid background -->
+  <g stroke="#00f5a0" stroke-opacity="0.03" stroke-width="1">
+    <line x1="0" y1="40" x2="600" y2="40"/>
+    <line x1="0" y1="100" x2="600" y2="100"/>
+    <line x1="0" y1="160" x2="600" y2="160"/>
+    <line x1="0" y1="220" x2="600" y2="220"/>
+    <line x1="0" y1="280" x2="600" y2="280"/>
+    <line x1="60" y1="0" x2="60" y2="340"/>
+    <line x1="180" y1="0" x2="180" y2="340"/>
+    <line x1="300" y1="0" x2="300" y2="340"/>
+    <line x1="420" y1="0" x2="420" y2="340"/>
+    <line x1="540" y1="0" x2="540" y2="340"/>
+  </g>
+  
+  <!-- Main Terminal Window -->
+  <g transform="translate(50, 30)" filter="url(#glow)">
+    <!-- Window chrome -->
+    <rect x="0" y="0" width="500" height="280" rx="6" fill="url(#terminalGrad)" stroke="#00f5a0" stroke-width="1.5" stroke-opacity="0.5"/>
+    
+    <!-- Title bar -->
+    <rect x="0" y="0" width="500" height="32" rx="6" fill="#0d1820" stroke="none"/>
+    <circle cx="16" cy="16" r="6" fill="#ff3864" opacity="0.8"/>
+    <circle cx="36" cy="16" r="6" fill="#ffb800" opacity="0.8"/>
+    <circle cx="56" cy="16" r="6" fill="#00f5a0" opacity="0.8"/>
+    <text x="250" y="21" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#71808a">devops-toolkit  ›  main.go</text>
+    
+    <!-- Terminal content -->
+    <g font-family="monospace" font-size="9" fill="#e8f1f5" transform="translate(16, 50)">
+      <!-- Prompt -->
+      <text x="0" y="0" fill="#00f5a0">┌──(operator@devops-toolkit)-[~]</text>
+      <text x="0" y="18" fill="#00d9ff">└─$</text>
+      <text x="24" y="18" fill="#e8f1f5"> ./devops</text>
+      
+      <!-- Help output animation -->
+      <g id="helpOutput" opacity="1">
+        <text x="0" y="36" fill="#71808a">A comprehensive CLI toolkit for automating DevOps workflows</text>
+        <text x="0" y="54" fill="#00f5a0">USAGE:</text>
+        <text x="16" y="54" fill="#e8f1f5">devops [COMMAND] [FLAGS]</text>
+        <text x="0" y="72" fill="#00f5a0">COMMANDS:</text>
+        <text x="16" y="72" fill="#00d9ff">provision    </text><text x="120" y="72" fill="#e8f1f5">Provision infrastructure (AWS/GCP/DO)</text>
+        <text x="16" y="88" fill="#00d9ff">deploy       </text><text x="120" y="88" fill="#e8f1f5">Zero-downtime deployment orchestration</text>
+        <text x="16" y="104" fill="#00d9ff">migrate      </text><text x="120" y="104" fill="#e8f1f5">Database migrations with rollback support</text>
+        <text x="16" y="120" fill="#00d9ff">secrets      </text><text x="120" y="120" fill="#e8f1f5">Secrets injection & rotation</text>
+        <text x="16" y="136" fill="#00d9ff">health       </text><text x="120" y="136" fill="#e8f1f5">Health checks & automated rollback</text>
+        <text x="16" y="152" fill="#00d9ff">cost         </text><text x="120" y="152" fill="#e8f1f5">Cost estimation & optimization reports</text>
+        <text x="16" y="168" fill="#00d9ff">terraform    </text><text x="120" y="168" fill="#e8f1f5">Terraform state management helpers</text>
+        <text x="16" y="184" fill="#00d9ff">plugin       </text><text x="120" y="184" fill="#e8f1f5">Manage custom workflow plugins</text>
+        <text x="16" y="200" fill="#00d9ff">completion   </text><text x="120" y="200" fill="#e8f1f5">Generate shell completions</text>
+      </g>
+      
+      <!-- Animated command execution -->
+      <g id="execAnimation" opacity="0">
+        <text x="0" y="36" fill="#00f5a0">┌──(operator@devops-toolkit)-[~]</text>
+        <text x="0" y="54" fill="#00d9ff">└─$</text>
+        <text x="24" y="54" fill="#e8f1f5"> ./devops provision --env=staging --provider=aws</text>
+        
+        <text x="0" y="72" fill="#71808a">[INFO]  Parsing configuration: environments/staging.yaml</text>
+        <text x="0" y="88" fill="#71808a">[INFO]  Validating Terraform modules...</text>
+        <text x="0" y="104" fill="#00f5a0">[OK]    VPC module validated</text>
+        <text x="0" y="120" fill="#00f5a0">[OK]    EKS cluster module validated</text>
+        <text x="0" y="136" fill="#00f5a0">[OK]    RDS module validated</text>
+        <text x="0" y="152" fill="#00f5a0">[OK]    ElastiCache module validated</text>
+        <text x="0" y="168" fill="#71808a">[INFO]  Initializing Terraform...</text>
+        <text x="0" y="184" fill="#71808a">[INFO]  Planning infrastructure changes...</text>
+        
+        <!-- Animated spinner -->
+        <text x="0" y="200" fill="#ffb800" id="spinner">[⠋] Applying changes...</text>
+        <text x="0" y="216" fill="#00f5a0">[OK]    aws_vpc.main created</text>
+        <text x="0" y="232" fill="#00f5a0">[OK]    aws_eks_cluster.main creating...</text>
+        <text x="0" y="248" fill="#00f5a0">[OK]    aws_rds_instance.main created</text>
+      </g>
+    </g>
+    
+    <!-- Blinking cursor for help -->
+    <text x="80" y="36" fill="#00f5a0" class="cursor" id="cursor1">█</text>
+    <!-- Blinking cursor for exec -->
+    <text x="300" y="200" fill="#ffb800" class="cursor" id="cursor2">█</text>
+  </g>
+  
+  <!-- Side Panel: Architecture Diagram -->
+  <g transform="translate(50, 30)" filter="url(#glow)">
+    <rect x="0" y="0" width="180" height="280" rx="6" fill="#0a1117" stroke="#71808a" stroke-width="1" stroke-opacity="0.3"/>
+    
+    <!-- Architecture components -->
+    <g font-family="monospace" font-size="7" fill="#e8f1f5" transform="translate(10, 20)">
+      <text x="0" y="0" fill="#00f5a0" font-weight="bold">ARCHITECTURE</text>
+      
+      <!-- Provider Adapters -->
+      <g transform="translate(0, 20)">
+        <rect x="0" y="0" width="160" height="45" rx="3" fill="#0d1820" stroke="#00f5a0" stroke-width="1" stroke-opacity="0.5">
+          <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+        </rect>
+        <text x="5" y="14" fill="#00f5a0" font-weight="bold">▸ PROVIDER ADAPTERS</text>
+        <text x="10" y="26" fill="#00d9ff">▸ AWS SDK</text>
+        <text x="10" y="36" fill="#00d9ff">▸ GCP SDK</text>
+        <text x="90" y="26" fill="#00d9ff">▸ DigitalOcean</text>
+        <text x="90" y="36" fill="#00d9ff">▸ Custom</text>
+      </g>
+      
+      <!-- Terraform Wrapper -->
+      <g transform="translate(0, 75)">
+        <rect x="0" y="0" width="160" height="45" rx="3" fill="#0d1820" stroke="#ffb800" stroke-width="1" stroke-opacity="0.5">
+          <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+        </rect>
+        <text x="5" y="14" fill="#ffb800" font-weight="bold">▸ TERRAFORM WRAPPER</text>
+        <text x="10" y="26" fill="#ffb800">▸ Init / Plan / Apply</text>
+        <text x="10" y="36" fill="#ffb800">▸ State Management</text>
+        <text x="90" y="26" fill="#ffb800">▸ Module Registry</text>
+        <text x="90" y="36" fill="#ffb800">▸ Drift Detection</text>
+      </g>
+      
+      <!-- Config Parser -->
+      <g transform="translate(0, 130)">
+        <rect x="0" y="0" width="160" height="45" rx="3" fill="#0d1820" stroke="#00d9ff" stroke-width="1" stroke-opacity="0.5">
+          <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+        </rect>
+        <text x="5" y="14" fill="#00d9ff" font-weight="bold">▸ CONFIG ENGINE</text>
+        <text x="10" y="26" fill="#00d9ff">▸ YAML/JSON Parse</text>
+        <text x="10" y="36" fill="#00d9ff">▸ Schema Validate</text>
+        <text x="90" y="26" fill="#00d9ff">▸ Env Interpolation</text>
+        <text x="90" y="36" fill="#00d9ff">▸ Secret Refs</text>
+      </g>
+      
+      <!-- Plugin Loader -->
+      <g transform="translate(0, 185)">
+        <rect x="0" y="0" width="160" height="45" rx="3" fill="#0d1820" stroke="#ff3864" stroke-width="1" stroke-opacity="0.5">
+          <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="2s" begin="0.9s" repeatCount="indefinite"/>
+        </rect>
+        <text x="5" y="14" fill="#ff3864" font-weight="bold">▸ PLUGIN SYSTEM</text>
+        <text x="10" y="26" fill="#ff3864">▸ Dynamic Loading</text>
+        <text x="10" y="36" fill="#ff3864">▸ WASM Support</text>
+        <text x="90" y="26" fill="#ff3864">▸ Hook Registry</text>
+        <text x="90" y="36" fill="#ff3864">▸ Version Check</text>
+      </g>
+      
+      <!-- CLI Framework -->
+      <g transform="translate(0, 240)">
+        <rect x="0" y="0" width="160" height="30" rx="3" fill="#0d1820" stroke="#71808a" stroke-width="1" stroke-opacity="0.3">
+        </rect>
+        <text x="5" y="14" fill="#71808a" font-weight="bold">▸ COBRA CLI</text>
+        <text x="10" y="24" fill="#71808a">▸ Flags • Args • Completion</text>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Side Panel: Metrics / Stats -->
+  <g transform="translate(400, 30)" filter="url(#glow)">
+    <rect x="0" y="0" width="150" height="280" rx="6" fill="#0a1117" stroke="#71808a" stroke-width="1" stroke-opacity="0.3"/>
+    
+    <g font-family="monospace" font-size="8" fill="#e8f1f5" transform="translate(10, 20)">
+      <text x="0" y="0" fill="#00f5a0" font-weight="bold">METRICS</text>
+      
+      <!-- Stars -->
+      <g transform="translate(0, 25)">
+        <text x="0" y="0" fill="#71808a">GITHUB STARS</text>
+        <text x="0" y="18" fill="#ffb800" font-size="18" font-weight="bold">1.2k+</text>
+        <text x="0" y="34" fill="#00f5a0" font-size="7">▲ 47 this week</text>
+      </g>
+      
+      <!-- Contributors -->
+      <g transform="translate(0, 75)">
+        <text x="0" y="0" fill="#71808a">CONTRIBUTORS</text>
+        <text x="0" y="18" fill="#00d9ff" font-size="18" font-weight="bold">12</text>
+        <text x="0" y="34" fill="#00f5a0" font-size="7">▸ 3 core maintainers</text>
+      </g>
+      
+      <!-- Releases -->
+      <g transform="translate(0, 125)">
+        <text x="0" y="0" fill="#71808a">RELEASES</text>
+        <text x="0" y="18" fill="#00f5a0" font-size="18" font-weight="bold">v2.8.0</text>
+        <text x="0" y="34" fill="#00d9ff" font-size="7">▸ Monthly cadence</text>
+      </g>
+      
+      <!-- Downloads -->
+      <g transform="translate(0, 175)">
+        <text x="0" y="0" fill="#71808a">DOWNLOADS/MO</text>
+        <text x="0" y="18" fill="#ffb800" font-size="18" font-weight="bold">5k+</text>
+        <text x="0" y="34" fill="#00f5a0" font-size="7">▸ Homebrew • AUR • Scoop</text>
+      </g>
+      
+      <!-- Test Coverage -->
+      <g transform="translate(0, 225)">
+        <text x="0" y="0" fill="#71808a">TEST COVERAGE</text>
+        <text x="0" y="18" fill="#00f5a0" font-size="18" font-weight="bold">92%</text>
+        <text x="0" y="34" fill="#00d9ff" font-size="7">▸ Unit • Integration • E2E</text>
+      </g>
+      
+      <!-- Platforms -->
+      <g transform="translate(0, 265)">
+        <text x="0" y="0" fill="#71808a">PLATFORMS</text>
+        <text x="0" y="16" fill="#e8f1f5" font-size="7">linux/amd64 • linux/arm64</text>
+        <text x="0" y="28" fill="#e8f1f5" font-size="7">darwin/amd64 • darwin/arm64</text>
+        <text x="0" y="40" fill="#e8f1f5" font-size="7">windows/amd64</text>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Animated particles flowing between panels -->
+  <g fill="#00f5a0">
+    <circle r="2" opacity="0.7">
+      <animateMotion path="M230 100 L230 180 L350 180" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;1;0" keytimes="0;0.1;0.9;1" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.5" fill="#00d9ff" opacity="0.7">
+      <animateMotion path="M230 140 L230 220 L350 220" dur="3.5s" begin="0.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;1;0" keytimes="0;0.1;0.9;1" dur="3.5s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="1.5" fill="#ffb800" opacity="0.7">
+      <animateMotion path="M230 180 L230 260 L350 260" dur="4s" begin="1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;1;0" keytimes="0;0.1;0.9;1" dur="4s" begin="1s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Feature badges at bottom -->
+  <g transform="translate(50, 320)" font-family="monospace" font-size="7" fill="#71808a">
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="70" height="16" rx="2" fill="#0a1117" stroke="#00f5a0" stroke-width="1" stroke-opacity="0.5"/>
+      <text x="35" y="11" text-anchor="middle" fill="#00f5a0">GO 1.22+</text>
+    </g>
+    <g transform="translate(80, 0)">
+      <rect x="0" y="0" width="70" height="16" rx="2" fill="#0a1117" stroke="#00d9ff" stroke-width="1" stroke-opacity="0.5"/>
+      <text x="35" y="11" text-anchor="middle" fill="#00d9ff">COBRA CLI</text>
+    </g>
+    <g transform="translate(160, 0)">
+      <rect x="0" y="0" width="85" height="16" rx="2" fill="#0a1117" stroke="#ffb800" stroke-width="1" stroke-opacity="0.5"/>
+      <text x="42.5" y="11" text-anchor="middle" fill="#ffb800">TERRAFORM</text>
+    </g>
+    <g transform="translate(255, 0)">
+      <rect x="0" y="0" width="70" height="16" rx="2" fill="#0a1117" stroke="#ff3864" stroke-width="1" stroke-opacity="0.5"/>
+      <text x="35" y="11" text-anchor="middle" fill="#ff3864">WASM PLUGINS</text>
+    </g>
+    <g transform="translate(335, 0)">
+      <rect x="0" y="0" width="80" height="16" rx="2" fill="#0a1117" stroke="#71808a" stroke-width="1" stroke-opacity="0.5"/>
+      <text x="40" y="11" text-anchor="middle" fill="#71808a">CROSS-PLATFORM</text>
+    </g>
+    <g transform="translate(425, 0)">
+      <rect x="0" y="0" width="70" height="16" rx="2" fill="#0a1117" stroke="#00f5a0" stroke-width="1" stroke-opacity="0.5"/>
+      <text x="35" y="11" text-anchor="middle" fill="#00f5a0">OPEN SOURCE</text>
+    </g>
+  </g>
+  
+  <!-- Title -->
+  <text x="300" y="338" text-anchor="middle" font-family="monospace" font-size="9" font-weight="bold" fill="#00f5a0" letter-spacing="3" opacity="0.7">DEVOPS AUTOMATION TOOLKIT</text>
+  
+  <!-- CSS-like animations for cursors (using SMIL) -->
+  <style>
+    <![CDATA[
+      .cursor {
+        animation: blink 1s step-end infinite;
+      }
+      @keyframes blink {
+        0%, 49% { opacity: 1; }
+        50%, 100% { opacity: 0; }
+      }
+    ]]>
+  </style>
+  
+  <!-- Animate the help/exec toggle -->
+  <animate xlink:href="#helpOutput" attributeName="opacity" values="1;1;0;0;1" keytimes="0;0.3;0.35;0.65;1" dur="8s" repeatCount="indefinite"/>
+  <animate xlink:href="#execAnimation" attributeName="opacity" values="0;0;1;1;0" keytimes="0;0.3;0.35;0.65;1" dur="8s" repeatCount="indefinite"/>
+  
+  <!-- Spinner animation -->
+  <animate xlink:href="#spinner" attributeName="textContent" values="[⠋] Applying changes...;[⠙] Applying changes...;[⠹] Applying changes...;[⠸] Applying changes...;[⠼] Applying changes...;[⠴] Applying changes...;[⠦] Applying changes...;[⠧] Applying changes...;[⠇] Applying changes...;[⠏] Applying changes..." dur="1s" repeatCount="indefinite"/>
+</svg>

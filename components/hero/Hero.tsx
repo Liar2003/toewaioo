@@ -144,7 +144,7 @@ export default function Hero({ bootDone }: { bootDone: boolean }) {
       <HeroHUD readouts={readouts} online />
 
       {/* foreground content */}
-      <div className="pointer-events-none relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-12 lg:px-16">
+      <div className="pointer-events-none relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-12 lg:px-16">
         <div className="pointer-events-auto max-w-2xl">
           <div className="mb-5">
             <StatusIndicator label="SYSTEM ONLINE" tone="online" />
@@ -152,19 +152,19 @@ export default function Hero({ bootDone }: { bootDone: boolean }) {
 
           {/* single semantic h1: name + role, visual styling preserved */}
           <h1>
-            <span className="block font-mono text-sm tracking-[0.4em] text-muted sm:text-base">
+            <span className="block font-mono text-xs tracking-[0.35em] text-muted sm:text-sm sm:tracking-[0.4em]">
               {profile.name.toUpperCase()}
             </span>
-            <span className="mt-3 block text-4xl font-extrabold leading-[1.05] tracking-tight text-frost sm:text-6xl lg:text-7xl">
+            <span className="mt-3 block text-[2.25rem] font-extrabold leading-[1.05] tracking-tight text-frost sm:text-5xl md:text-6xl lg:text-7xl">
               <GlitchText text={typedTitle || "\u00A0"} />
             </span>
           </h1>
 
-          <p className="mt-6 max-w-md font-mono text-xs leading-relaxed tracking-wider text-muted sm:text-sm">
+          <p className="mt-5 max-w-md font-mono text-xs leading-relaxed tracking-wider text-muted sm:mt-6 sm:text-sm">
             {profile.tagline}
           </p>
 
-          <div className="mt-9 flex flex-wrap gap-4">
+          <div className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:flex-wrap sm:gap-4">
             <a href="#projects" className="btn-hud">
               [ VIEW PROJECTS ]
             </a>
